@@ -27,8 +27,8 @@ day = str_extract(development$date, pattern = "^[:digit:]+(?=/)")
 development$date = paste(day, month, year, sep = "/")
 
 #plotting sale against date
-housing_lineplot = ggplot(development, aes(x = as.Date(development$date, format = "%m/%d/%Y"), y = sale)) + 
-  geom_line(aes(color = "yellow")) + labs(x = "date") + 
+ggplot(development, aes(x = as.Date(development$date, format = "%m/%d/%Y"), y = sale)) + 
+  geom_line(aes(color = "yellow")) + labs(title = "Housing Spending (in millions)", x = "date") + 
   theme_hc() + 
   theme(legend.position = "none")
 
