@@ -4,6 +4,9 @@ library("dplyr")
 library("magrittr")
 library("tidyr")
 library("ggthemes")
+library("lmtest")
+library("MASS")
+
 
 #read into R
 validation = read.csv("Validation.csv")
@@ -66,6 +69,14 @@ rdpi = read.csv("RDPI(per capita).csv")
 rdpi = rdpi[1:288,"A229RX0"]
 development = data.frame(development, rdpi)
 
-#ksdnsk
+#Plot RDPI against sale
 
+ggplot(development, aes(x = rdpi, y = sale)) + geom_point(alpha=.4)
 
+#Read Total Household into R
+
+tot_house = read.csv("Total Household.csv") %>% .[,c(1,2)]
+
+#Adding Total Household into development
+
+development = data.frame(development, tot_house = tot_house$TTLHH[1:288])
