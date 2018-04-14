@@ -43,13 +43,20 @@ agg.hpi = aggregate(hpi, by = list(as.factor(hpi$yr), as.factor(hpi$period)), FU
 
 #extracting HPI variable
 
-hpi_index = agg.hpi[which(agg.hpi$yr <= 2015 & agg.hpi$yr >= 1992),]
+hpi_index = subset(agg.hpi, agg.hpi$yr < 2016) %>% subset( yr > 1991) 
 hpi_nsa = hpi_index$index_nsa
 hpi_sa = hpi_index$index_sa
 
 #adding HPI into development data
 
 development = data.frame(development, hpi_nsa, hpi_sa)
+
+#analyzing correlation between HPI and sale
+
+ggplot(development, aes(hpi_nsa, sale)) + geom_point(alpha = .3)
+ggplot(development, aes(hpi_sa, sale)) + geom_point(alpha = .3)
+#looks like there is a positive correlation
+
 
 
 
