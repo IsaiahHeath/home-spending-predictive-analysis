@@ -57,7 +57,15 @@ ggplot(development, aes(hpi_nsa, sale)) + geom_point(alpha = .3)
 ggplot(development, aes(hpi_sa, sale)) + geom_point(alpha = .3)
 #looks like there is a positive correlation
 
+#Read RDPI per capita into R
 
+rdpi = read.csv("RDPI(per capita).csv")
 
+#Adding RDPI varible into R
+
+rdpi = rdpi[1:288,"A229RX0"]
+development = data.frame(development, rdpi)
+
+#
 
 
