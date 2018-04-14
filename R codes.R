@@ -32,8 +32,24 @@ ggplot(development, aes(x = as.Date(development$date, format = "%m/%d/%Y"), y = 
   theme_hc() + 
   theme(legend.position = "none")
 
+#read HPI monthly
 
+hpi = read.csv("HPI_monthly.csv")
 
+#collapse by year and month
+
+agg.hpi = aggregate(hpi, by = list(as.factor(hpi$yr), as.factor(hpi$period)), FUN = "mean", na.rm = TRUE) %>%
+  .[order(agg.hpi$yr, agg.hpi$period),]
+
+#extracting HPI variable
+
+hpi_index = agg.hpi[which(agg.hpi$yr <= 2015 & agg.hpi$yr >= 1992),]
+hpi_nsa = hpi_index$index_nsa
+hpi_sa = hpi_index$index_sa
+
+#adding HPI into development data
+
+development = data.frame(development, hpi_nsa, hpi_sa)
 
 
 
