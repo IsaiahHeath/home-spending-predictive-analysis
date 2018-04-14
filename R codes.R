@@ -26,10 +26,15 @@ month = str_extract(development$date, pattern = "(?<=/)[:digit:]+(?=/)")
 day = str_extract(development$date, pattern = "^[:digit:]+(?=/)")
 development$date = paste(day, month, year, sep = "/")
 
-ggplot(development, aes(x = as.Date(development$date, format = "%m/%d/%Y"), y = sale)) + 
+#plotting sale against date
+housing_lineplot = ggplot(development, aes(x = as.Date(development$date, format = "%m/%d/%Y"), y = sale)) + 
   geom_line(aes(color = "yellow")) + labs(x = "date") + 
   theme_hc() + 
   theme(legend.position = "none")
+
+
+
+
 
 
 
