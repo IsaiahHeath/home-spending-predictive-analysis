@@ -55,6 +55,15 @@ datasetHE <- read_csv("external datasets/TTLHHM156N.csv", na = "NA")
 datasetHE <- datasetHE[datasetHE >= "1992-01-01" & datasetHE <= "2015-12-01",]
 datasetHE <- slice(datasetHE, 1:288)
 
+#Development CSV
+devcsv <- read_csv("Development.csv")
+
+
 myDataFrame <- data.frame(SP500Close=X_GSPC$Close, RDI=A229RX0$A229RX0, CPI=CPIHOSSL$CPIHOSSL, HPI=CSUSHPINSA$CSUSHPINSA, FFR=FEDFUNDS$FEDFUNDS, PSR=PSAVERT$PSAVERT, HE=datasetHE$TTLHHM156N)
+myDataFrame <- cbind(devcsv$`Sales in $MM`, myDataFrame)
 myDataFrame <- cbind(X_GSPC$Date, myDataFrame)
+names(myDataFrame)[names(myDataFrame) == 'devcsv$`Sales in $MM`'] <- 'Sales'
 names(myDataFrame)[names(myDataFrame) == 'X_GSPC$Date'] <- 'Date'
+
+# attach(myDataFrame)
+# model1 <- glm(formula = )
