@@ -4,6 +4,7 @@ development = read.csv("Development.csv")
 
 library(dplyr)
 library(ggplot2)
+library(reshape2)
 library(readr)
 
 #import stlouisfed datasets
@@ -99,5 +100,3 @@ summary(model1)
 test_prediction <- predict(model1, test_df)
 mse = rmse(test_prediction, test_df$Sales)
 
-#predicted_sales <- data_frame(myDataFrame$Date, predicted_sales)
-#write_csv(predicted_sales, 'predicted_sales.csv')
