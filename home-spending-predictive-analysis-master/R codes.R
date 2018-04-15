@@ -6,11 +6,6 @@ library(dplyr)
 library(ggplot2)
 library(readr)
 
-#dataframe
-x <- c("SP500closing", "RealDisposableIncome", "CPI", "HPI", "FFR", "PSR", "HE")
-dFrame <- data.frame(matrix(ncol = length(x)))
-colnames(dFrame) <- x
-
 #import stlouisfed datasets
 #S&P 500 Closing Values https://finance.yahoo.com/quote/%5EGSPC/history?period1=662709600&period2=1523682000&interval=1mo&filter=history&frequency=1mo
 X_GSPC <- read_csv("external datasets/^GSPC.csv", col_types = cols_only(Close = col_guess(), Date = col_guess()))
@@ -58,12 +53,21 @@ datasetHE <- slice(datasetHE, 1:288)
 #Development CSV
 devcsv <- read_csv("Development.csv")
 
-
+#Formatting and additional columns
 myDataFrame <- data.frame(SP500Close=X_GSPC$Close, RDI=A229RX0$A229RX0, CPI=CPIHOSSL$CPIHOSSL, HPI=CSUSHPINSA$CSUSHPINSA, FFR=FEDFUNDS$FEDFUNDS, PSR=PSAVERT$PSAVERT, HE=datasetHE$TTLHHM156N)
 myDataFrame <- cbind(devcsv$`Sales in $MM`, myDataFrame)
 myDataFrame <- cbind(X_GSPC$Date, myDataFrame)
 names(myDataFrame)[names(myDataFrame) == 'devcsv$`Sales in $MM`'] <- 'Sales'
 names(myDataFrame)[names(myDataFrame) == 'X_GSPC$Date'] <- 'Date'
+write_csv(myDataFrame, 'IsaiahTable.csv')
+myDataFrame <- read_csv("IsaiahTable.csv", col_types = cols(Sales = col_number()))
 
-# attach(myDataFrame)
-# model1 <- glm(formula = )
+#Model
+#attach(myDataFrame)
+model1 <- glm(myDataFrame$Sales ~ myDataFrame$SP500Close + myDataFrame$RDI + myDataFrame$CPI + myDataFrame$HPI + myDataFrame$FFR + myDataFrame$PSR + myDataFrame$HE, data = myDataFrame)
+summary(model1)
+
+#Dataframe for predicted sales (in $mm)
+predicted_sales <- predict(model1)
+predicted_sales <- data_frame(myDataFrame$Date, predicted_sales)
+write_csv(predicted_sales, 'predicted_sales.csv')
